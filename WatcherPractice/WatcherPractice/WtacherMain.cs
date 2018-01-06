@@ -3,14 +3,22 @@ using System.IO;
 
 namespace WatcherPractice
 {
-    class WtacherMain
+    class WtacherHelper
     {
-        public static void WatchStart(string path, string filter)
+        private string _path;
+        private string _filer;
+
+        public WtacherHelper(string path, string filer)
+        {
+            this._path = path;
+            this._filer = filer;
+        }
+
+        public void WatchStart()
         {
             FileSystemWatcher watcher = new FileSystemWatcher();
-            watcher.Path = path;
-
-            watcher.Filter = filter;
+            watcher.Path = _path;
+            watcher.Filter = _filer;
 
             watcher.Changed += new FileSystemEventHandler(Onprocess);
             watcher.Created += new FileSystemEventHandler(Onprocess);
@@ -22,7 +30,7 @@ namespace WatcherPractice
 
 
 
-        private static void Onprocess(object source, FileSystemEventArgs e)
+        private void Onprocess(object source, FileSystemEventArgs e)
         {
             if (e.ChangeType == WatcherChangeTypes.Created)
             {
@@ -40,22 +48,22 @@ namespace WatcherPractice
 
 
 
-        private static void OnCreated(object source, FileSystemEventArgs fileSystemEventArgs)
+        private void OnCreated(object source, FileSystemEventArgs fileSystemEventArgs)
         {
             Console.WriteLine("Created file event handling.");
         }
 
-        private static void OnChanged(object source, FileSystemEventArgs fileSystemEventArgs)
+        private void OnChanged(object source, FileSystemEventArgs fileSystemEventArgs)
         {
             Console.WriteLine("Changed file event handling.");
         }
 
-        private static void OnDelete(object source, FileSystemEventArgs fileSystemEventArgs)
+        private void OnDelete(object source, FileSystemEventArgs fileSystemEventArgs)
         {
             Console.WriteLine("Delete file event handling.");
         }
 
-        private static void OnRenamed(object sender, RenamedEventArgs e)
+        private void OnRenamed(object sender, RenamedEventArgs e)
         {
             Console.WriteLine("Rename event handling.");
         }
