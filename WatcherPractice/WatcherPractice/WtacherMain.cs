@@ -14,21 +14,50 @@ namespace WatcherPractice
 
             watcher.Changed += new FileSystemEventHandler(Onprocess);
             watcher.Created += new FileSystemEventHandler(Onprocess);
+            watcher.Deleted += new FileSystemEventHandler(Onprocess);
+            watcher.Renamed += new RenamedEventHandler(OnRenamed);
 
+            watcher.EnableRaisingEvents = true;
         }
+
 
 
         private static void Onprocess(object source, FileSystemEventArgs e)
         {
             if (e.ChangeType == WatcherChangeTypes.Created)
             {
-                Oncreated(source, e);
-            } 
+                OnCreated(source, e);
+            }
+            else if (e.ChangeType == WatcherChangeTypes.Changed)
+            {
+                OnChanged(source, e);
+            }
+            else if (e.ChangeType == WatcherChangeTypes.Deleted)
+            {
+                OnDelete(source, e);
+            }
         }
 
-        private static void Oncreated(object source, FileSystemEventArgs fileSystemEventArgs)
+
+
+        private static void OnCreated(object source, FileSystemEventArgs fileSystemEventArgs)
         {
             Console.WriteLine("Created file event handling.");
+        }
+
+        private static void OnChanged(object source, FileSystemEventArgs fileSystemEventArgs)
+        {
+            Console.WriteLine("Changed file event handling.");
+        }
+
+        private static void OnDelete(object source, FileSystemEventArgs fileSystemEventArgs)
+        {
+            Console.WriteLine("Delete file event handling.");
+        }
+
+        private static void OnRenamed(object sender, RenamedEventArgs e)
+        {
+            Console.WriteLine("Rename event handling.");
         }
     }
 }
